@@ -1,1 +1,1 @@
-# mos_itsm_UI-extension_creator
+# mos_itsm_UI-extension_descriptor
