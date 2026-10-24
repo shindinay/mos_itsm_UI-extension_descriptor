@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""CLI-помощник скилла mos_itsm_ui_extension_descriptor.
+"""CLI-помощник скилла mos_itsm_UI-extension_descriptor.
 
 Работает с REST API МосИТСМ (Xurrent-совместимым):
   GET   {api_base}/ui_extensions/{id}            — карточка расширения (вместе с кодом вкладок)
@@ -263,15 +263,18 @@ def main():
     sp.add_argument("--ext", required=True, help="ID или ссылка на расширение")
     sp.add_argument("--out", default=None, help="куда сохранить JSON")
     sp.add_argument("--token", default=None)
+    sp.add_argument("--account", default=None, help="пространство (иначе MOSITSM_ACCOUNT из .env)")
 
     sp = sub.add_parser("versions", help="история версий расширения")
     sp.add_argument("--ext", required=True)
     sp.add_argument("--out", default=None)
     sp.add_argument("--token", default=None)
+    sp.add_argument("--account", default=None)
 
     sp = sub.add_parser("list", help="найти расширения по имени")
     sp.add_argument("--name", default=None, help="подстрока имени (без учёта регистра)")
     sp.add_argument("--token", default=None)
+    sp.add_argument("--account", default=None)
 
     sp = sub.add_parser("set-description", help="записать описание из файла (с бэкапом)")
     sp.add_argument("--ext", required=True)
@@ -281,17 +284,22 @@ def main():
     sp.add_argument("--no-backup", action="store_true")
     sp.add_argument("--backup-dir", default=None)
     sp.add_argument("--token", default=None)
+    sp.add_argument("--account", default=None)
 
     sp = sub.add_parser("check", help="сверить description с файлом и вёрстку description_html")
     sp.add_argument("--ext", required=True)
     sp.add_argument("--file", default=None)
     sp.add_argument("--token", default=None)
+    sp.add_argument("--account", default=None)
 
     args = p.parse_args()
     env_cfg = load_env()
     if args.env:
         env_cfg = dict(env_cfg)
         env_cfg["MOSITSM_STAGE"] = args.env
+    if getattr(args, "account", None):
+        env_cfg = dict(env_cfg)
+        env_cfg["MOSITSM_ACCOUNT"] = args.account
 
     if args.cmd == "get":
         do_get(args, env_cfg)

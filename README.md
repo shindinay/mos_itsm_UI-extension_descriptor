@@ -1,1 +1,20 @@
-# mos_itsm_UI-extension_creator
+# mos_itsm_UI-extension_descriptor
+
+Скилл для создания описаний UI-расширений (экранных форм) ITSM-системы МосИТСМ
+(4me/Xurrent, itsm.mos.ru).
+
+Что делает:
+- скачивает UI-расширение через REST API и анализирует вкладки HTML/JavaScript/CSS;
+- формирует описание расширения в формате `*.md` по шаблону `references/description_template.md`;
+- записывает описание в карточку расширения (поле `description`) через REST API.
+
+Скилл не создаёт и не изменяет код расширений — только их описания.
+Создание расширений: скилл `mos-itsm-ui-extension`.
+
+Структура:
+- `SKILL.md` — инструкция для ИИ-агента;
+- `scripts/ui_extension.py` — CLI: get / versions / list / set-description / check;
+- `references/` — шаблон описания, выгрузки существующих расширений, справочники платформы;
+- `backups/` — автоматические бэкапы перед записью;
+- `artifact/` — готовые описания `desc_<ID>.md`;
+- `.env` — URL API, аккаунты, токены, среда (не публиковать).
