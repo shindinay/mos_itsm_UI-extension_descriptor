@@ -9,18 +9,29 @@
 </th></tr><tr><td>
 24.10.2026
 </td><td>
-000001
+00000
 </td><td>
-Первичное создание описания расширения (расширение 9072).
+Первичное создание описания расширения (расширение 58).
 </td></tr></table>
 
-## Описание расширения
+# О расширении
 
-Расширение «[аккаунты] назначение ОЛ КУ» (заголовок вкладки — «данные для проведения работ», категория request_template) предназначено для передачи сведений о назначении ответственных лиц (ОЛ) при проведении работ. Пользователь заполняет от одного до пяти одинаковых блоков «Ответственное лицо»: для каждого блока указывает организацию, характер воздействия (добавление или удаление), ФИО ответственного лица, прикладывает письмо из ЭДО и указывает номер письма в ЭДО.
+Расширение предназначено для сбора входных данных при оформлении заявки на увольнение сотрудника (категория request_template, вкладка «Входные данные»). 
 
-Блок №1 («Ответственное лицо 1») отображается сразу при открытии формы; блоки №2–№5 добавляются кнопкой «+ Добавить блок» и убираются кнопкой «− Удалить блок» (с запросом подтверждения). JavaScript-логика управляет только набором показанных блоков и очисткой полей удаляемого блока; отдельная валидация при сохранении и обработка предзаполнения формы (хуки ITRP) не используются — обязательность полей обеспечивается классом required.
 
-#### Секция "action_section0" (служебная)
+## Использование 
+
+Пользователь указывает ФИО сотрудника (выбор из представления «лица_все»), его организацию (выбор из представления «подведы_дит»), должность, фактического руководителя (подсказки по сотрудникам), точное место локации (подсказки по локациям), кабинет и дату увольнения.
+
+
+## Особенности
+
+Вкладка состоит из пяти секций. Заполнению доступна только секция с данными сотрудника; остальные четыре секции скрыты классом hide и размещают в разметке вкладки служебные поля записи (время регистрации, сведения об инициаторе и о том, для кого запрошена услуга, услуга и короткое описание) — без показа пользователю. JavaScript- и CSS-вкладки отсутствуют: динамическая логика не выполняется, видимость секций и полей задана статически классами в разметке, стили платформы не переопределяются. Обязательность полей обеспечивается классом required.
+
+
+# Спецификация
+
+### Секция "section0" (служебная)
 
 <table><tr><th data-colwidth="173">
 Параметр
@@ -29,7 +40,7 @@
 </th></tr><tr><td>
 ID
 </td><td>
-action_section0
+section0
 </td></tr><tr><td>
 Class
 </td><td>
@@ -37,27 +48,7 @@ section-top hide
 </td></tr><tr><td>
 Видимость секции
 </td><td>
-Служебная пустая секция-заглушка: заголовок не задан, полей нет. Скрыта (класс hide); JavaScript её не обрабатывает.
-</td></tr></table>
-
-#### Секция "Ответственное лицо 1"
-
-<table><tr><th data-colwidth="173">
-Параметр
-</th><th>
-Значение
-</th></tr><tr><td>
-ID
-</td><td>
-action1
-</td></tr><tr><td>
-Class
-</td><td>
-section
-</td></tr><tr><td>
-Видимость секции
-</td><td>
-Базовый блок: виден всегда при открытии формы. JavaScript никогда его не скрывает — кнопка удаления обрабатывает только блоки №2–№5.
+Служебная скрытая секция: заголовок не задан. Скрыта (класс hide); JavaScript-вкладка отсутствует — секция никогда не показывается.
 </td></tr></table>
 
 Поля секции
@@ -69,7 +60,7 @@ section
 </th><th style="text-align:left;background-color:rgb(244, 245, 247)">
 **Тип**
 </th><th style="text-align:left;background-color:rgb(244, 245, 247)">
-**Значение по умолчанию** 
+**Значение по умолчанию**
 </th><th style="text-align:left;background-color:rgb(244, 245, 247)">
 **Обязат.**
 </th><th style="text-align:left;background-color:rgb(244, 245, 247)">
@@ -85,9 +76,523 @@ section
 </th><th style="text-align:left;background-color:rgb(244, 245, 247)">
 **Примечание**
 </th></tr><tr><td>
-Организация
+Время регистрации
 </td><td style="text-align:left">
-organisation_action1
+created_at
+</td><td style="text-align:left">
+Дата и время
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"; класс date-time
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи (время регистрации запроса)
+</td></tr></table>
+
+### Секция "Инициировано кем"
+
+<table><tr><th data-colwidth="173">
+Параметр
+</th><th>
+Значение
+</th></tr><tr><td>
+ID
+</td><td>
+section
+</td></tr><tr><td>
+Class
+</td><td>
+section hide
+</td></tr><tr><td>
+Видимость секции
+</td><td>
+Скрыта при открытии вкладки (класс hide); JavaScript-вкладка отсутствует — динамический показ не предусмотрен.
+</td></tr></table>
+
+Поля секции
+
+<table><tr><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Экранное название**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**label**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Тип**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Значение по умолчанию**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Обязат.**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Способ взаимодействия**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Источник данных (при необход.)**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Видимость**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)" data-colwidth="88">
+**Доступность**
+</th><th>
+Фильтрация и Поиск
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Примечание**
+</th></tr><tr><td>
+Создано кем
+</td><td style="text-align:left">
+reqs_by_fio
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи (инициатор запроса)
+</td></tr><tr><td>
+Учреждение
+</td><td style="text-align:left">
+reqs_by_oiv
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr><tr><td>
+Локация
+</td><td style="text-align:left">
+reqs_by_site
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr><tr><td>
+Рабочий
+</td><td style="text-align:left">
+reqs_by_tel_work
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Поле телефона (подпись label — «Рабочий», подсказка — «Телефон»)
+</td></tr><tr><td>
+Мобильный
+</td><td style="text-align:left">
+reqs_by_tel_mobile
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Поле телефона (подпись label — «Мобильный», подсказка — «Телефон»)
+</td></tr><tr><td>
+E-mail
+</td><td style="text-align:left">
+reqs_by_email
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr></table>
+
+### Секция "Инициировано для кого"
+
+<table><tr><th data-colwidth="173">
+Параметр
+</th><th>
+Значение
+</th></tr><tr><td>
+ID
+</td><td>
+section1
+</td></tr><tr><td>
+Class
+</td><td>
+section hide
+</td></tr><tr><td>
+Видимость секции
+</td><td>
+Скрыта при открытии вкладки (класс hide); JavaScript-вкладка отсутствует — динамический показ не предусмотрен.
+</td></tr></table>
+
+Поля секции
+
+<table><tr><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Экранное название**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**label**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Тип**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Значение по умолчанию**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Обязат.**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Способ взаимодействия**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Источник данных (при необход.)**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Видимость**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)" data-colwidth="88">
+**Доступность**
+</th><th>
+Фильтрация и Поиск
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Примечание**
+</th></tr><tr><td>
+Услуга запрошено для
+</td><td style="text-align:left">
+reqs_for_fio
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи (получатель услуги)
+</td></tr><tr><td>
+Учреждение
+</td><td style="text-align:left">
+reqs_for_oiv
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr><tr><td>
+Локация
+</td><td style="text-align:left">
+reqs_for_site
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr><tr><td>
+Рабочий
+</td><td style="text-align:left">
+reqs_for_tel_work
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Поле телефона (подпись label — «Рабочий», подсказка — «Телефон»)
+</td></tr><tr><td>
+Мобильный
+</td><td style="text-align:left">
+reqs_for_tel_mobile
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Поле телефона (подпись label — «Мобильный», подсказка — «Телефон»)
+</td></tr><tr><td>
+E-mail
+</td><td style="text-align:left">
+reqs_for_email
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr></table>
+
+#### Секция "Описание запроса, требующего согласование"
+
+<table><tr><th data-colwidth="173">
+Параметр
+</th><th>
+Значение
+</th></tr><tr><td>
+ID
+</td><td>
+section2
+</td></tr><tr><td>
+Class
+</td><td>
+section hide
+</td></tr><tr><td>
+Видимость секции
+</td><td>
+Скрыта при открытии вкладки (класс hide); JavaScript-вкладка отсутствует — динамический показ не предусмотрен.
+</td></tr></table>
+
+Поля секции
+
+<table><tr><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Экранное название**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**label**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Тип**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Значение по умолчанию**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Обязат.**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Способ взаимодействия**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Источник данных (при необход.)**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Видимость**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)" data-colwidth="88">
+**Доступность**
+</th><th>
+Фильтрация и Поиск
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Примечание**
+</th></tr><tr><td>
+Услуга
+</td><td style="text-align:left">
+service_name
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr><tr><td>
+Короткое описание
+</td><td style="text-align:left">
+subject
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+нет
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Всегда скрыто: секция скрыта (класс hide), строка поля имеет класс hide
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Служебное поле записи
+</td></tr></table>
+
+### Секция "section3" (без заголовка)
+
+<table><tr><th data-colwidth="173">
+Параметр
+</th><th>
+Значение
+</th></tr><tr><td>
+ID
+</td><td>
+section3
+</td></tr><tr><td>
+Class
+</td><td>
+section
+</td></tr><tr><td>
+Видимость секции
+</td><td>
+Видна всегда при открытой вкладке; заголовок секции пустой и скрыт (span с классом section-header hide). Основная заполняемая секция вкладки.
+</td></tr></table>
+
+Поля секции
+
+<table><tr><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Экранное название**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**label**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Тип**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Значение по умолчанию**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Обязат.**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Способ взаимодействия**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Источник данных (при необход.)**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Видимость**
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)" data-colwidth="88">
+**Доступность**
+</th><th>
+Фильтрация и Поиск
+</th><th style="text-align:left;background-color:rgb(244, 245, 247)">
+**Примечание**
+</th></tr><tr><td>
+ФИО сотрудника
+</td><td style="text-align:left">
+fio
 </td><td style="text-align:left">
 Справочник
 </td><td style="text-align:left">
@@ -97,43 +602,63 @@ organisation_action1
 </td><td style="text-align:left">
 Выбор из справочника
 </td><td>
-Подсказки организаций (organization-suggest)
-
-Отбор: только одна запись — data-multiple, data-min="1", data-max="1"
+Представление «лица_все» (data-custom-view="лица_все")
 </td><td>
-Видно, когда видна секция "<c #a9a9a9>Ответственное лицо 1</c>"
+Видно всегда при открытой вкладке
 </td><td>
 <c #172b4d>не заблокир.</c>
 </td><td>
 не требуется
 </td><td>
-Очищается при удалении блока (ввод и выбранный элемент)
+Обязательное поле (класс required)
 </td></tr><tr><td>
-Воздействие
+Организация сотрудника
 </td><td style="text-align:left">
-action_select1
+oiv
 </td><td style="text-align:left">
-Выпадающий список
+Справочник
 </td><td style="text-align:left">
 пусто
 </td><td style="text-align:left">
 да
 </td><td style="text-align:left">
-Выбор из списка
+Выбор из справочника
 </td><td>
-Значения: «Добавление» (добавление), «Удаление» (удаление)
+Представление «подведы_дит» (data-custom-view="подведы_дит")
 </td><td>
-Видно, когда видна секция "<c #a9a9a9>Ответственное лицо 1</c>"
+Видно всегда при открытой вкладке
 </td><td>
 <c #172b4d>не заблокир.</c>
 </td><td>
 не требуется
 </td><td>
-Очищается при удалении блока (возвращается в пустое значение)
+Обязательное поле (класс required)
 </td></tr><tr><td>
-ФИО ОЛ
+Должность сотрудника
 </td><td style="text-align:left">
-fio_action1
+position
+</td><td style="text-align:left">
+Текст
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+да
+</td><td style="text-align:left">
+Ввод вручную
+</td><td>
+autocomplete="off"
+</td><td>
+Видно всегда при открытой вкладке
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Обязательное поле (класс required)
+</td></tr><tr><td>
+Руководитель сотрудника
+</td><td style="text-align:left">
+executive
 </td><td style="text-align:left">
 Справочник
 </td><td style="text-align:left">
@@ -145,170 +670,83 @@ fio_action1
 </td><td>
 Подсказки по сотрудникам (person-suggest)
 </td><td>
-Видно, когда видна секция "<c #a9a9a9>Ответственное лицо 1</c>"
+Видно всегда при открытой вкладке
 </td><td>
 <c #172b4d>не заблокир.</c>
 </td><td>
 не требуется
 </td><td>
-Очищается при удалении блока (ввод и выбранный элемент)
+Подсказка label — «Фактический руководитель сотрудника»; обязательное поле (класс required)
 </td></tr><tr><td>
-Письмо из ЭДО
+Точное место локации сотрудника
 </td><td style="text-align:left">
-edo_action1
+site
 </td><td style="text-align:left">
-Вложение
+Справочник
 </td><td style="text-align:left">
 пусто
 </td><td style="text-align:left">
 да
 </td><td style="text-align:left">
-Загрузка вложения
+Выбор из справочника
 </td><td>
-data-type="attachment"
+Подсказки по локациям (site-suggest)
 </td><td>
-Видно, когда видна секция "<c #a9a9a9>Ответственное лицо 1</c>"
+Видно всегда при открытой вкладке
 </td><td>
 <c #172b4d>не заблокир.</c>
 </td><td>
 не требуется
 </td><td>
-Очищается при удалении блока (удаляется информация о файле и сбрасывается input)
+Обязательное поле (класс required)
 </td></tr><tr><td>
-Номер письма в ЭДО
+Кабинет
 </td><td style="text-align:left">
-number_letter_edo_1
+cabinet
 </td><td style="text-align:left">
 Текст
 </td><td style="text-align:left">
 пусто
 </td><td style="text-align:left">
-да
+нет
 </td><td style="text-align:left">
 Ввод вручную
 </td><td>
-Автозаполнение браузера отключено (autocomplete="off")
+autocomplete="off"
 </td><td>
-Видно, когда видна секция "<c #a9a9a9>Ответственное лицо 1</c>"
+Видно всегда при открытой вкладке
 </td><td>
 <c #172b4d>не заблокир.</c>
 </td><td>
 не требуется
 </td><td>
-При удалении блока значение не очищается — сохранится при повторном добавлении блока
+Единственное необязательное поле вкладки
+</td></tr><tr><td>
+Дата увольнения
+</td><td style="text-align:left">
+dismissal_date
+</td><td style="text-align:left">
+Дата
+</td><td style="text-align:left">
+пусто
+</td><td style="text-align:left">
+да
+</td><td style="text-align:left">
+Ввод вручную (виджет даты, класс date)
+</td><td>
+autocomplete="off"
+</td><td>
+Видно всегда при открытой вкладке
+</td><td>
+<c #172b4d>не заблокир.</c>
+</td><td>
+не требуется
+</td><td>
+Обязательное поле (класс required)
 </td></tr></table>
 
-#### Секция "Ответственное лицо 2"
+В разметке секции «section3» закомментированы два поля, отмеченные как используемые для API (cfc): oiv_cfc «Организация сотрудника» и location «Точное место локации сотрудника». На форму они не влияют и не отображаются.
 
-<table><tr><th data-colwidth="173">
-Параметр
-</th><th>
-Значение
-</th></tr><tr><td>
-ID
-</td><td>
-action2
-</td></tr><tr><td>
-Class
-</td><td>
-section hidden
-</td></tr><tr><td>
-Видимость секции
-</td><td>
-Скрыта при открытии формы. Показывается кнопкой «+ Добавить блок» (открывается первый скрытый блок по порядку), скрывается кнопкой «− Удалить блок» (удаляется последний показанный блок, с подтверждением).
-</td></tr></table>
+# Элементы управения (кнопки и динамическое поведение)
 
-#### Секция "Ответственное лицо 3"
-
-<table><tr><th data-colwidth="173">
-Параметр
-</th><th>
-Значение
-</th></tr><tr><td>
-ID
-</td><td>
-action3
-</td></tr><tr><td>
-Class
-</td><td>
-section hidden
-</td></tr><tr><td>
-Видимость секции
-</td><td>
-Скрыта при открытии формы. Показывается кнопкой «+ Добавить блок» (открывается первый скрытый блок по порядку), скрывается кнопкой «− Удалить блок» (удаляется последний показанный блок, с подтверждением).
-</td></tr></table>
-
-#### Секция "Ответственное лицо 4"
-
-<table><tr><th data-colwidth="173">
-Параметр
-</th><th>
-Значение
-</th></tr><tr><td>
-ID
-</td><td>
-action4
-</td></tr><tr><td>
-Class
-</td><td>
-section hidden
-</td></tr><tr><td>
-Видимость секции
-</td><td>
-Скрыта при открытии формы. Показывается кнопкой «+ Добавить блок» (открывается первый скрытый блок по порядку), скрывается кнопкой «− Удалить блок» (удаляется последний показанный блок, с подтверждением).
-</td></tr></table>
-
-#### Секция "Ответственное лицо 5"
-
-<table><tr><th data-colwidth="173">
-Параметр
-</th><th>
-Значение
-</th></tr><tr><td>
-ID
-</td><td>
-action5
-</td></tr><tr><td>
-Class
-</td><td>
-section hidden
-</td></tr><tr><td>
-Видимость секции
-</td><td>
-Скрыта при открытии формы. Показывается кнопкой «+ Добавить блок» (открывается первый скрытый блок по порядку), скрывается кнопкой «− Удалить блок» (удаляется последний показанный блок, с подтверждением).
-</td></tr></table>
-
-Поля секций №2–№5 полностью аналогичны секции «Ответственное лицо 1», идентификаторы полей отличаются только номером блока: organisation_action2…organisation_action5, action_select2…action_select5, fio_action2…fio_action5, edo_action2…edo_action5, number_letter_edo_2…number_letter_edo_5.
-
-#### Кнопки и динамическое поведение
-
-Кнопки формы:
-
-<table><tr><th data-colwidth="173">
-Кнопка (id)
-</th><th>
-Расположение
-</th><th>
-Действие
-</th></tr><tr><td>
-+ Добавить блок (addBlockBtn)
-</td><td>
-Контейнер actions-container в конце вкладки, после блока №5
-</td><td>
-Находит первый скрытый блок из №2–№5 и показывает его (снимает класс hidden), затем пересчитывает видимость кнопок. Когда видимы все 5 блоков — кнопка скрывается
-</td></tr><tr><td>
-− Удалить блок (removeBlockBtn)
-</td><td>
-Контейнер actions-container в конце вкладки; при загрузке формы скрыта (display:none)
-</td><td>
-Берёт последний видимый блок из №2–№5 и запрашивает подтверждение (диалог браузера confirm: «Удалить {заголовок блока}?»). После подтверждения очищает значения всех полей блока и скрывает его. Пока виден только блок №1 — кнопка скрыта
-</td></tr></table>
-
-Динамическое поведение:
-
-- Видимость блоков управляется классом hidden; в CSS-вкладке содержится единственное правило .hidden { display:none !important; }. Другой CSS не используется.
-- Состав видимых блоков отслеживается функцией getVisibleCount (подсчёт блоков action1–action5 без класса hidden), последний видимый блок выбирает getLastVisibleBlock (поиск от №5 к №2; блок №1 в удаление не попадает — он базовый, не скрывается и не удаляется).
-- Блоки показываются строго по порядку: при добавлении открывается первый скрытый из №2–№5, пропусков не остаётся.
-- Очистка полей удаляемого блока (clearBlockValues): выпадающий список «Воздействие» возвращается в пустое значение; в полях «Организация» и «ФИО ОЛ» очищается ввод и удаляются выбранные элементы (.selected-item); во вложении «Письмо из ЭДО» удаляется информация о файле (.file-info) и сбрасывается input. Поле «Номер письма в ЭДО» при этом не очищается — введённое значение сохранится и будет видно при повторном добавлении блока.
-- Видимость кнопок пересчитывается после каждого действия (updateButtons): «+ Добавить блок» скрыта при 5 видимых блоках, «− Удалить блок» показана, когда видимых блоков больше одного.
-- Хуки платформы (в том числе after-prefill), обработчики событий полей и обращение к данным записи в JavaScript не используются — логика реагирует только на нажатие кнопок.
+Кнопки в разметке отсутствуют. JavaScript- и CSS-вкладки пустые: обработчики событий, хуки платформы (в том числе after-prefill) и обращение к данным записи не используются; после открытия вкладки состояние формы не меняется. Видимость секций и полей задана статическими классами hide в HTML-вкладке: видимы только поля секции «section3» (данные сотрудника), остальные секции скрыты постоянно.
